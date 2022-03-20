@@ -57,40 +57,40 @@ main:
 	rjmp main
 
 delay_1ms:
-push r17
-push r16
-push r20
+	push r17
+	push r16
+	push r20
 
-ldi r20, (1<<OCF0B)
-out tifr0, r20 // TIFR0 null
-ldi r20, 0
-sts 0x46, r20 // TCNT0 null
+	ldi r20, (1<<OCF0B)
+	out tifr0, r20 // TIFR0 null
+	ldi r20, 0
+	sts 0x46, r20 // TCNT0 null
 
-ldi r17, 1
-sts 0x48, r17
-loop:
-	in r16, 0x15
-	andi r16, 0b0000_100
-breq loop
+	ldi r17, 1
+	sts 0x48, r17
+	loop:
+		in r16, 0x15
+		andi r16, 0b0000_100
+	breq loop
 
-pop r20
-pop r16
-pop r17
+	pop r20
+	pop r16
+	pop r17
 
-ret
+	ret
 
 delay_r20r21_ms:
-push r20
-push r21
+	push r20
+	push r21
 
-delay_ms:
-	call delay_1ms
-	subi r20, 1
-	sbci r21, 0
-	brne delay_ms
+	delay_ms:
+		call delay_1ms
+		subi r20, 1
+		sbci r21, 0
+		brne delay_ms
 
-pop r21
-pop r20
-ret
+	pop r21
+	pop r20
+	ret
 
 

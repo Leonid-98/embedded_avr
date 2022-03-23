@@ -5,26 +5,22 @@ out SPL, r16
 out SPH, r17
 
 ;TIMER
-// COM = Clear AC1A on compare, set at TOP
-// WGM = 10bit fast PWM
-// CS = clk source no prescaling
+// COM1A1 = Clear OC1A on compare, set at TOP !!!
+// WGM = 10bit fast PWM, CS = clk source no prescaling
 ldi r16, 1<<WGM11 | 1<<WGM10 | 1<<COM1A1
 ldi r17, 1<<WGM12 | 1<<CS10			
 sts TCCR1A, r16
 sts TCCr1B, r17
 
 ;ADC
-// REFS = VCC reference
-// MUX1 = ADC2 source (potentiometer)
-// ADCENable, ADcStartConversion, ADcAutoTriggerEnable
-ldi  r16, (1<<REFS0)|(1<<MUX1) 
-ldi  r17, (1<<ADEN)|(1<<ADSC)|(1<<ADATE) 
+ldi  r16, (1<<REFS0)|(1<<MUX1) //reference = VCC
 sts  ADMUX, r16
-sts  ADCSRA, r17
+ldi  r16, (1<<ADEN)|(1<<ADSC)|(1<<ADATE) //ADCENable, ADcStartConversion, ADcAutoTriggerEnable
+sts  ADCSRA, r16
 
 ;LED
 ldi r16, 0xFF
-out ddra, r16
+out DDRA, r16
 
 main:
 	wait_for_adc:
@@ -46,27 +42,27 @@ main:
 
 	;kui TCNT == OCRnB (TIFR0[3] == 1), PWM=0
 	sts TIFR1, r16
-	andi r16, 1<<OFC1B // Output Compare B mask
+	andi r16, 1<<OCF1B // Output Compare B mask
 	cpi r16, 1<<OCF1B
 	breq pwm_off
 	
-	
-
 	rjmp main
 
 pwm_on:
 	ldi r16, 0xFF
-	out porta, r16
+	out PORTA, r16
 
-	ldi r16, 1<<TOV1
+	ldi r16, 1<<TOV1  // Clear overflow flag
 	sts TIFR1, r16
+
 	rjmp main
 
 pwm_off:
 	ldi r16, 0
-	out porta, r16
+	out PORTA, r16
 
-	ldi r16, 1<<OCF1B
+	ldi r16, 1<<OCF1B  // Clear compare flag
 	sts TIFR0, r16
+
 	rjmp main
 	

@@ -33,7 +33,7 @@ slider_label = ttk.Label(root, text="Slider:")
 slider_label.grid(column=0, row=0, sticky="w")
 
 #  slider
-slider = tk.Scale(root, from_=0, to=1024, tickinterval=1, orient="horizontal", command=slider_changed, variable=current_value)  # vertical
+slider = tk.Scale(root, from_=0, to=511, tickinterval=1, orient="horizontal", command=slider_changed, variable=current_value)  # vertical
 slider.grid(column=0, row=1, sticky="we", columnspan=10)
 
 # current value label

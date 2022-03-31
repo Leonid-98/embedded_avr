@@ -22,60 +22,63 @@ out DDRA, r16
 ldi r16, (1<<PA0)
 out PORTA, r16
 
-.equ msb_mask = 0b10 // 10th bit in 16bit val
-.equ xor_mask = 0b01 // 9th bit is only required
-.equ stop_mask_h = 0b01 
-.equ stop_mask_l = 0b1111_0000
+.equ nine_bit_mask = 0b01
+.equ msb_mask = 0b10
+.equ stop_mask_h = 0b01
+.equ stop_mask_l = 0b1110_0000
 
 main:
     // read adc value
 	wait_for_adc:
-		ldi r16, ADCSRA
+		lds r16, ADCSRA
 		andi r16, (1<<ADIF) 
 		breq wait_for_adc
 	lds r20, ADCL
 	lds r21, ADCH
 
-	// check if in center (496 kuni 511 | 01 1111 xxxx)
-	// kui ADC == 01_1111_xxxx, hypab tagasi
+	// save msb (r25)
+	mov r25, r21
+	andi r25, msb_mask // MSB is 10th bit
+
+	// remove msb (keep only 9th bit)
+	andi r21, nine_bit_mask
+
+	// if msb == 1 : xor [9:0]
+	cpi r25, msb_mask
+		breq invert_bits
+		rjmp invert_done
+	invert_bits:
+		ldi r17, nine_bit_mask
+		ldi r16, 0xFF
+		eor r21, r17
+		eor r20, r16
+	invert_done:	
+
+	// check if adc val < 480 (01_111x_xxxx)
 	mov r16, r20
 	mov r17, r21
-	andi r17, stop_mask_h
-	cpi r17, stop_mask_h
-		breq check_low_byte
-		rjmp check_passed // no stop (arv ei ole vahemikus 486 kuni 511)
-		check_low_byte:
-			andi r16, stop_mask_l
-			cpi r16, stop_mask_l
-			breq main
+	andi r16, stop_mask_l
+	cpi r16, stop_mask_l
+	brne check_passed
+		andi r17, stop_mask_h
+		cpi r17, stop_mask_h
+		breq main
 	check_passed:
 
-	// check whitch bit is MSB, detects side
-	mov r16, r21
-	andi r16, msb_mask // MSB is 10th bit
-	cpi r16, msb_mask
-		breq left_side  // if msb = 1
-		rjmp right_side // else
+	cpi r25, msb_mask
+		breq left_shift
+		rjmp right_shift
 
-	left_side:
-		// invert 9-0 bit
-		ldi r16, 0xFF
-		eor r20, r16
-		ldi r16, xor_mask
-		eor r21, r16
-		andi r21, xor_mask
-
+	left_shift:	
 		call shift_led_left
 		rjmp continue_main
 
-	right_side:
+	right_shift:
 		call shift_led_right
-		rjmp continue_main
 
 	continue_main:
-
-	// delay + 10ms
-	ldi r16, 10
+	// delay + 100ms
+	ldi r16, 100
 	ldi r17, 0
 	add r20, r16
 	adc r21, r17

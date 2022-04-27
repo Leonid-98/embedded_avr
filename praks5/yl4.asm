@@ -177,19 +177,3 @@ rx_interrupt:
 	pop r20
 	pop r16
 	reti
-
-a:
-ldi r17, 2
-lsl r17
-ldi r30, low(arvud<<1)
-ldi r31, high(arvud<<1)
-ldi r16, 0
-add r30, r17
-
-lpm r20, z
-inc r30
-adc r31, r16
-lpm r21, z
-
-arvud: 
-.dw 512, 513, 1024

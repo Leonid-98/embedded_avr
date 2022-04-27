@@ -36,13 +36,7 @@ main:
 	sts OCR1AH, r21
 	sts OCR1AL, r20
 
-	// fast timer
-	ldi r16, 0
-	ldi r17, (0<<CS02) | (1<<CS01) | (1<<CS00)
-	ldi r18, (1<<TOIE0) // overflow interrupt en
-	out TCCR0A, r16
-	out TCCR0B, r17
-	sts TIMSK0, r18
+	
 
 	sei // global interrupt en
 
@@ -81,7 +75,6 @@ main:
 	out DDRE, r17 
 	out PORTE, r16
 	
-	ldi r16, 0
 	ldi r17, 1<<PB7
 	out DDRB, r17
 	out PORTB, r17

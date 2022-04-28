@@ -6,48 +6,46 @@
 ISR(TIMER1_COMPA_vect){
 	// compare with OCR1A
 	PORTA ^= 0xFF;
-	reti();
 }
 
-ISR(USART0_RX_vect){
+ISR(USART1_RX_vect){
 	DDRA = 0xFF;
 	switch (UDR1){
 		case '0':
-			PORTA = 0;
-			DDRA = 0;
-			break;
+		PORTA = 0;
+		DDRA = 0;
+		break;
 		case '1':
-			OCR1A = 976;
-			break;
+		OCR1A = 976;
+		break;
 		case '2':
-			OCR1A = 488;
-			break;
+		OCR1A = 488;
+		break;
 		case '3':
-			OCR1A = 325;
-			break;
+		OCR1A = 325;
+		break;
 		case '4':
-			OCR1A = 244;
-			break;
+		OCR1A = 244;
+		break;
 		case '5':
-			OCR1A = 195;
-			break;
+		OCR1A = 195;
+		break;
 		case '6':
-			OCR1A = 162;
-			break;
+		OCR1A = 162;
+		break;
 		case '7':
-			OCR1A = 139;
-			break;
+		OCR1A = 139;
+		break;
 		case '8':
-			OCR1A = 122;
-			break;
+		OCR1A = 122;
+		break;
 		case '9':
-			OCR1A = 108;
-			break;
+		OCR1A = 108;
+		break;
 		case 'X':
-			OCR1A = 1;
-			break;
+		OCR1A = 1;
+		break;
 	}
-	reti();
 }
 
 void UARTsendByte(char chr){
@@ -80,6 +78,7 @@ int main(void){
 	
 	sei();
 	while (TRUE){
-		UARTsendString("Leonid");
+		char name[7] = "Leonid";
+		UARTsendString(name);
 	}
 }

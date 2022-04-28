@@ -1,11 +1,9 @@
 #include "avr/io.h"
 #include "avr/interrupt.h"
-
 #define TRUE 1
 
 ISR(TIMER0_OVF_vect){
 	PORTA ^= 0xFF;
-	reti();
 }
 
 void UARTsendByte(char chr){
@@ -38,6 +36,7 @@ int main(void)
 	
 	sei();
 	while (TRUE){
-		UARTsendString("Leonid");
+		char name[7] = "Leonid";
+		UARTsendString(name);
 	}
 }

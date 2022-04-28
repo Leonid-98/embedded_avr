@@ -18,6 +18,21 @@ uint8_t numbers[10] = {
 	0b11110110
 };
 
+void shiftByteOut(uint8_t number){
+	for (uint8_t i = 8; i > 0; i--){
+		if (number & 1){
+			PORTE = 1<<PE4;
+			PORTE = (1<<PE4) | (1<<PE3);
+			} else {
+			PORTE = 0<<PE4;
+			PORTE = (0<<PE4) | (1<<PE3);
+		}
+		number >>= 1;
+	}
+	PORTB = 1<<PB7;
+	PORTB = 0;
+}
+
 ISR(TIMER0_OVF_vect){
 	// fast timer
 	counter_flip ^= 0xFF;
@@ -28,8 +43,6 @@ ISR(TIMER0_OVF_vect){
 		PORTD = 0;
 		shiftByteOut(numbers[counter_left]);
 	}
-	
-	reti();
 }
 
 ISR(TIMER1_COMPA_vect){
@@ -41,22 +54,6 @@ ISR(TIMER1_COMPA_vect){
 	}
 	if (counter_left == 10)
 	counter_left = 0;
-	
-	reti();
-}
-
-void shiftByteOut(uint8_t number){
-	for (uint8_t i = 8; i > 0; i--){
-		if (number & 1){
-			PORTE = 1<<PE4;
-			PORTE = (1<<PE4) | (1<<PE3);
-			} else {
-			PORTE = 0<<PE4;
-			PORTE = (0<<PE4) | (1<<PE3);
-		}
-	}
-	PORTB = 1<<PB7;
-	PORTB = 0;
 }
 
 
@@ -83,7 +80,5 @@ int main(void){
 	PORTA = 0xFF;
 	
 	sei();
-	while (TRUE){
-		;
-	}
+	while (TRUE);
 }

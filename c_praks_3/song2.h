@@ -1,0 +1,37 @@
+/*
+ * song2.h
+ *
+ * Created: 2022-05-02 21:34:08
+ *  Author: admin
+ */ 
+
+
+#ifndef SONG2_H_
+#define SONG2_H_
+
+#include "notes.h"
+
+const int16_t melody2[] = {
+
+	NOTE_B4,-4, NOTE_E5,-4, NOTE_B4,-4, NOTE_E5,-4,
+	NOTE_B4,8,  NOTE_E5,-4, NOTE_B4,8, REST,8,  NOTE_AS4,8, NOTE_B4,8,
+	NOTE_B4,8,  NOTE_AS4,8, NOTE_B4,8, NOTE_A4,8, REST,8, NOTE_GS4,8, NOTE_A4,8, NOTE_G4,8,
+	NOTE_G4,4,  NOTE_E4,-2,
+	NOTE_B4,-4, NOTE_E5,-4, NOTE_B4,-4, NOTE_E5,-4,
+	NOTE_B4,8,  NOTE_E5,-4, NOTE_B4,8, REST,8,  NOTE_AS4,8, NOTE_B4,8,
+
+	NOTE_A4,-4, NOTE_A4,-4, NOTE_GS4,8, NOTE_A4,-4,
+	NOTE_D5,8,  NOTE_C5,-4, NOTE_B4,-4, NOTE_A4,-4,
+	NOTE_B4,-4, NOTE_E5,-4, NOTE_B4,-4, NOTE_E5,-4,
+	NOTE_B4,8,  NOTE_E5,-4, NOTE_B4,8, REST,8,  NOTE_AS4,8, NOTE_B4,8,
+	NOTE_D5,4, NOTE_D5,-4, NOTE_B4,8, NOTE_A4,-4,
+	NOTE_G4,-4, NOTE_E4,-2,
+	NOTE_E4, 2, NOTE_G4,2,
+	NOTE_B4, 2, NOTE_D5,2,
+
+	NOTE_F5, -4, NOTE_E5,-4, NOTE_AS4,8, NOTE_AS4,8, NOTE_B4,4, NOTE_G4,4,
+};
+
+const int16_t tempo2 = 140;
+
+#endif /* SONG2_H_ */

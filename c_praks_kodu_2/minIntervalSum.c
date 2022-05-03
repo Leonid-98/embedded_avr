@@ -27,6 +27,7 @@ int32_t getMinRegion(int8_t *array, uint16_t count, uint16_t *start, uint16_t *e
 		ptr++;
 		count--;
 	}
+	return minSum;
 }
 
 int main(void){
@@ -40,7 +41,7 @@ int main(void){
 	while (1);
 }
 
-// c online
+//======================================== C ONLINE COMPILER
 #include <stdio.h>
 int getSum(int *ptr, int size){
 	int sum = 0;
@@ -52,20 +53,12 @@ int getSum(int *ptr, int size){
 	return sum;
 }
 
-int main()
-{
-	
-	int array[5] = {10, -11, 2, 3, -2};
-	int count = 5;
-	//---------------------------------
+int getMinRegion(int *array, int count, int *start, int *end) {
 	const int size = count;
 	int *ptr = array;
 	
 	int minSum = 999;
 	int tempSum;
-	
-	int start;
-	int end;
 	
 	for (int startCnt = 0; startCnt < size - 1; startCnt++) {
 		for (int endCnt = count; endCnt > 1; endCnt--){
@@ -73,16 +66,30 @@ int main()
 			printf(" : Sum = %d\n", tempSum);
 			if (tempSum < minSum) {
 				minSum = tempSum;
-				start = startCnt;
-				end = endCnt;
+				*start = startCnt;
+				*end = endCnt;
 			}
 		}
 		ptr++;
 		count--;
 		printf("\n");
-		
 	}
+	return minSum;
+}
+
+int main()
+{
+	
+	int array[5] = {10, -11, 2, 3, -2};
+	int count = 5;
+	//---------------------------------
+	int start;
+	int end;
+	int *ptrStart = &start;
+	int *ptrEnd = &end;
+	int minSum = getMinRegion(array, count, ptrStart, ptrEnd);
+	
+	
 	printf("\n(%d, %d); sum: %d", start, end, minSum);
 	return 0;
 }
-
